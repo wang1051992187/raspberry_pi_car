@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+{% block container %}
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">轨迹运行情况</h3>
+          </div>
+          <div class="panel-body">
+            <div id="container" style="min-width:400px;height:700px"></div>
+          </div>
+        </div>
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">当前温湿度变化情况</h3>
+          </div>
+          <div class="panel-body">
+              <div id="container2"></div>
+          </div>
+        </div>
+
+        <div class="input-card">
+                <h4>轨迹回放控制</h4>
+                <div class="input-item">
+                    <input type="button" class="btn" value="开始动画" id="start" onclick="startAnimation()"/>
+                    <input type="button" class="btn" value="暂停动画" id="pause" onclick="pauseAnimation()"/>
+                </div>
+                <div class="input-item">
+                    <input type="button" class="btn" value="继续动画" id="resume" onclick="resumeAnimation()"/>
+                    <input type="button" class="btn" value="停止动画" id="stop" onclick="stopAnimation()"/>
+                </div>
+            </div>
+{% end %}
+
+
+{% block script %}
+    <script>
+        Highcharts.setOptions({
+	global: {
+		useUTC: false
+	}
+});
+function activeLastPointToolip(chart) {
+	var points = chart.series[0].points;
+	chart.tooltip.refresh(points[points.length -1]);
+}
+var chart = Highcharts.chart('container2', {
+	chart: {
+		type: 'spline',
+		marginRight: 10,
+		events: {
+			load: function () {
+				var series = this.series[0],
+					chart = this;
+				activeLastPointToolip(chart);
+				setInterval(function () {
+					var x = (new Date()).getTime(), // 当前时间
+						y = Math.random();          // 随机值
+					series.addPoint([x, y], true, true);
+					activeLastPointToolip(chart);
+				}, 1000);
+			}
+		}
+	},
+	title: {
+		text: '动态模拟实时数据'
+	},
+	xAxis: {
+		type: 'datetime',
+		tickPixelInterval: 150
+	},
+	yAxis: {
+		title: {
+			text: null
+		}
+	},
+	tooltip: {
+		formatter: function () {
+			return '<b>' + this.series.name + '</b><br/>' +
+				Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +
+				Highcharts.numberFormat(this.y, 2);
+		}
+	},
+	legend: {
+		enabled: false
+	},
+	series: [{
+		name: '随机数据',
+		data: (function () {
+			// 生成随机值
+			var data = [],
+				time = (new Date()).getTime(),
+				i;
+			for (i = -19; i <= 0; i += 1) {
+				data.push({
+					x: time + i * 1000,
+					y: Math.random()
+				});
+			}
+			return data;
+		}())
+	}]
+});
+    </script>
+
+  <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.13&key=您申请的key值"></script>
+<script>
+    var marker, lineArr = [[116.478935,39.997761],[116.478939,39.997825],[116.478912,39.998549],[116.478912,39.998549],[116.478998,39.998555],[116.478998,39.998555],[116.479282,39.99856],[116.479658,39.998528],[116.480151,39.998453],[116.480784,39.998302],[116.480784,39.998302],[116.481149,39.998184],[116.481573,39.997997],[116.481863,39.997846],[116.482072,39.997718],[116.482362,39.997718],[116.483633,39.998935],[116.48367,39.998968],[116.484648,39.999861]];
+
+    var map = new AMap.Map("container", {
+        resizeEnable: true,
+        center: [116.397428, 39.90923],
+        zoom: 17
+    });
+
+    marker = new AMap.Marker({
+        map: map,
+        position: [116.478935,39.997761],
+        icon: "https://webapi.amap.com/images/car.png",
+        offset: new AMap.Pixel(-26, -13),
+        autoRotation: true,
+        angle:-90,
+    });
+
+    // 绘制轨迹
+    var polyline = new AMap.Polyline({
+        map: map,
+        path: lineArr,
+        showDir:true,
+        strokeColor: "#28F",  //线颜色
+        // strokeOpacity: 1,     //线透明度
+        strokeWeight: 6,      //线宽
+        // strokeStyle: "solid"  //线样式
+    });
+
+    var passedPolyline = new AMap.Polyline({
+        map: map,
+        // path: lineArr,
+        strokeColor: "#AF5",  //线颜色
+        // strokeOpacity: 1,     //线透明度
+        strokeWeight: 6,      //线宽
+        // strokeStyle: "solid"  //线样式
+    });
+
+
+    marker.on('moving', function (e) {
+        passedPolyline.setPath(e.passedPath);
+    });
+
+    map.setFitView();
+
+    function startAnimation () {
+        marker.moveAlong(lineArr, 200);
+    }
+
+    function pauseAnimation () {
+        marker.pauseMove();
+    }
+
+    function resumeAnimation () {
+        marker.resumeMove();
+    }
+
+    function stopAnimation () {
+        marker.stopMove();
+    }
+</script>
+{% end %}
