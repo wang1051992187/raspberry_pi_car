@@ -2,7 +2,7 @@
 # coding=utf-8
 
 import os.path
-#import picamera
+import picamera
 import tornado.httpserver
 import tornado.ioloop
 import tornado.options
@@ -18,7 +18,7 @@ import asyncio
 
 WIDTH = 700
 HEIGHT = 500
-FPS = 100
+FPS = 30
 
 from tornado.options import define, options
 
@@ -39,7 +39,7 @@ class ControlHandler(tornado.web.RequestHandler):
     实时控制
     """
     def get(self):
-        self.render('control.html',title="实时控制")
+        self.render('control.html',title="实时控制",url="2146j5051n.imwork.net")
 
     def post(self):
         pass
@@ -94,7 +94,7 @@ class WSHandler(tornado.websocket.WebSocketHandler):
         self.close()  # 关闭WebSocket会话
         print(self.request.remote_ip, ": connection closed")
 
-"""
+
 def piCamera():
     camera = picamera.PiCamera()
     camera.resolution = (WIDTH, HEIGHT)
@@ -103,11 +103,11 @@ def piCamera():
 
     time.sleep(2)  # 相机初始化
     return camera
-"""
+
 
 
 if __name__ == "__main__":
-    #camera = piCamera()
+    camera = piCamera()
     print("complete initialization")
     tornado.options.parse_command_line()
     app = tornado.web.Application(
@@ -115,7 +115,7 @@ if __name__ == "__main__":
                   (r'/control', ControlHandler),
                   (r'/history', HistoryHandler),
                   (r'/selfdrive', SelfdriveHandler),
-                  #(r"/camera", WSHandler, dict(camera=camera)),
+                  (r"/camera", WSHandler, dict(camera=camera)),
                   ],
         template_path=os.path.join(os.path.dirname(__file__), "templates"),
         static_path=os.path.join(os.path.dirname(__file__), "static"),

@@ -53,7 +53,7 @@ var img = document.getElementById("liveImg");
 var arrayBuffer;
 
 //使用WebSocket连接到服务器
-var ws = new WebSocket("ws://192.168.1.123:8000/camera"); ws.binaryType = 'arraybuffer';   //设置为要接收的数据是二进制
+var ws = new WebSocket("ws://{{url}}/camera"); ws.binaryType = 'arraybuffer';   //设置为要接收的数据是二进制
 
 ws.onopen = function(){console.log("connection was established");};  //建立连接时调用
 ws.onmessage = function(evt){

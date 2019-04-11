@@ -7,5 +7,4 @@
     应用框架及相关技术：
          1.Python tornado框架
          2.picamera
-         3.
     
