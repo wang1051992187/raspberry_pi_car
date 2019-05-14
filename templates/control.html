@@ -1,4 +1,7 @@
 {% extends "base.html" %}
+{% block css %}
+
+{% end %}
 {% block container %}
     <div class="row">
           <div class="col-xs-12 col-sm-6 col-md-8">
@@ -18,24 +21,24 @@
                   </div>
                   <div class="panel-body" style="margin: 30px;margin-left: 46px">
                       <div class="row">
-                          <button class="btn btn-large btn-primary">状态切换(水/路)</button>
+                          <button id="change" class="btn btn-large btn-primary">状态切换(水/路)</button>
                       </div>
                       <br/>
                       <br/>
                       <br/>
                         <div class="row" >
                           <div class="col-md-4"></div>
-                          <div class="col-md-4"><button class="btn btn-large btn-primary" type="button"><span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span><br/>前进</button></div>
+                          <div class="col-md-4"><button id="advance" class="btn btn-large btn-primary" type="button"><span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span><br/>前进</button></div>
                           <div class="col-md-4"></div>
                         </div>
                       <div class="row">
-                          <div class="col-md-4"><button class="btn btn-large btn-primary" type="button"><span class="glyphicon glyphicon-triangle-left" aria-hidden="true"></span><br/>左转</button></div>
+                          <div class="col-md-4"><button id="left" class="btn btn-large btn-primary" type="button"><span class="glyphicon glyphicon-triangle-left" aria-hidden="true"></span><br/>左转</button></div>
                           <div class="col-md-4"></div>
-                          <div class="col-md-4"><button class="btn btn-large btn-primary" type="button"><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span><br/>右转</button></div>
+                          <div class="col-md-4"><button id="right" class="btn btn-large btn-primary" type="button"><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span><br/>右转</button></div>
                         </div>
                       <div class="row">
                           <div class="col-md-4"></div>
-                          <div class="col-md-4"><button class="btn btn-large btn-primary" type="button"><span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span><br/>后退</button></div>
+                          <div class="col-md-4"><button id="back" class="btn btn-large btn-primary" type="button"><span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span><br/>后退</button></div>
                           <div class="col-md-4"></div>
                       </div>
 
@@ -43,12 +46,20 @@
 
                   </div>
               </div>
+              <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">提示信息</h3>
+                  </div>
+                  <div class="panel-body" style="min-height: 120px;margin: auto">
+                      <div class="alert alert-success" role="alert">操作提示</div>
+                  </div>
+              </div>
           </div>
         </div>
 {% end %}
 
 {% block script %}
-  <script type="text/javascript">
+<script type="text/javascript">
 var img = document.getElementById("liveImg");
 var arrayBuffer;
 
@@ -93,5 +104,82 @@ function encode (input) {
     }
     return output;
 }
+</script>
+<script type="text/javascript">
+    $('#advance').click(function(){
+        console.log("前进");
+        getApi('w');
+    });
+    $('#back').click(function(){
+        console.log("后退");
+        getApi('s');
+    });
+    $('#left').click(function(){
+        console.log("左转");
+        getApi('a');
+    });
+    $('#right').click(function(){
+        console.log("右转");
+        getApi('d');
+    });
+    $('#change').click(function(){
+        console.log("切换");
+        getApi('e');
+    });
+    //后台请求控制命令
+    function getApi(way_i) {
+        $.ajax({
+            url: 'http://{{url}}/tocontrol',
+            type: 'get',
+            dataType: 'json',
+            data: { way: way_i},
+            success: function (data) {
+                //方法中传入的参数data为后台获取的数据
+                console.log(data);
+                $('.alert').html(data['msg']).addClass('alert-success').show().delay(500).fadeOut();
+            }
+        })
+    }
+    $(document).bind("keydown", function(event){
+    var msg = '';
+    if(event.which == 87){
+            console.log("按下w键");
+            $('#advance').click();
+            event.preventDefault();
+        }
+        if(event.which== 83){
+            console.log("按下S键");
+            $('#back').click();
+            event.preventDefault();
+        }
+        if(event.which == 65 ){
+            console.log("按下A键");
+            $('#left').click();
+            event.preventDefault();
+        }
+        if(event.which == 68 ){
+            console.log("按下D键");
+            $('#right').click();
+            event.preventDefault();
+        }
+        if(event.which == 81 ){
+            console.log("按下Q键");
+            $('#').click();
+            event.preventDefault();
+        }
+
+        if(event.which == 38 ){
+            console.log("按下向上键");
+            $('#').click();
+            event.preventDefault();
+        }
+
+        if(event.which == 40 ){
+            console.log("按下向下键");
+            $('#').click();
+            event.preventDefault();
+        }
+
+});
 </script>
 {% end %}

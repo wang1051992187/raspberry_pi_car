@@ -56,6 +56,9 @@
         .input-card .btn:last-child{
             margin-right: 0;
         }
+        {% block css %}
+
+        {% end %}
     </style>
   </head>
 
@@ -75,9 +78,10 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li class=""><a href="/control">实时控制</a></li>
-            <li><a href="/history">历史数据</a></li>
-            <li><a href="/selfdrive">自动巡检</a></li>
+            <li {% if active ==1 %}class="active"{% end %}><a href="/control">实时控制</a></li>
+            <li {% if active ==2 %}class="active"{% end %}><a href="/history">实时数据</a></li>
+            <li {% if active ==3 %}class="active"{% end %}><a href="/selfdrive">自动巡检</a></li>
+            <!--
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
               <ul class="dropdown-menu">
@@ -90,11 +94,12 @@
                 <li><a href="#">One more separated link</a></li>
               </ul>
             </li>
+            -->
           </ul>
           <ul class="nav navbar-nav navbar-right">
-              <li><a href="">CPU:20%</a></li>
-              <li><a href="">内存:80%</a></li>
-              <li><a href="">CPU温度:40°</a></li>
+              <li><a id="cpu" href="">CPU:20%</a></li>
+              <li><a id="nc" href="">内存:80%</a></li>
+              <li><a id="cpu_use" href="">GPU温度:40°</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -116,6 +121,27 @@
     <script src="./static/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="./static/js/ie10-viewport-bug-workaround.js"></script>
+    <script>
+      window.onload = function () {
+          getApi();
+      }
+      function getApi() {
+        //设置时间 5-秒  1000-毫秒  这里设置你自己想要的时间
+        setTimeout(getApi,5*1000);
+        $.ajax({
+            url: 'http://{{url}}/raspberryinfo',
+            type: 'get',
+            dataType: 'json',
+            success: function (data) {
+                //方法中传入的参数data为后台获取的数据
+                console.log(data);
+                $("#cpu").html("CPU温度：" + data['cpu'] + "°");
+                $("#cpu_use").html("CPU使用：" + data['cpu_use'] + "%");
+                $("#nc").html("内存使用：" + data['ram'] + "%");
+            }
+        })
+    }
+    </script>
     {% block script %}
 
     {% end %}

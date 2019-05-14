@@ -1,21 +1,108 @@
 {% extends "base.html" %}
 {% block container %}
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3 class="panel-title">自动驾驶</h3>
+         <div class="row">
+          <div class="col-xs-12 col-sm-6 col-md-8">
+              <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">实时运动地图</h3>
+                  </div>
+                  <div class="panel-body">
+                    <div id="container" style="min-width:400px;min-height:500px"></div>
+                  </div>
+                </div>
           </div>
-          <div class="panel-body">
-            <div id="container" style="min-width:400px;height:700px">
-              未完成
-            </div>
+          <div class="col-xs-6 col-md-4">
+              <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">实时画面</h3>
+                  </div>
+                  <div class="panel-body">
+                    <img id="liveImg" src="" style="min-height: 300px">
+                  </div>
+              </div>
+              <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">提示信息</h3>
+                  </div>
+                  <div class="panel-body" style="min-height: 120px;margin: auto">
+                      <div class="alert alert-success" role="alert">操作提示</div>
+                  </div>
+              </div>
           </div>
         </div>
-
+        <div class="input-card" style="width: 140px;text-align:center">
+                <h4>轨迹回放控制</h4>
+                <div class="input-item" style="">
+                    <input type="button" class="btn" value="开始自动巡检" id="start" onclick="startAnimation()"/>
+                </div>
+                <div class="input-item" >
+                    <input type="button" class="btn" value="暂停巡检" id="resume" onclick="resumeAnimation()"/>
+                </div>
+            </div>
 {% end %}
 
 
 {% block script %}
+<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.13&key=您申请的key值"></script>
 <script>
+    var marker, lineArr = [[121.553411,31.289103],[121.55392,31.289516],[121.554398,31.289809],[121.554677,31.289956],[121.554913,31.290075],[121.555353,31.290249],[121.555835,31.2904],[121.555648,31.290643],[121.555546,31.290762],[121.555465,31.290845],[121.555347,31.290987],[121.554929,31.29145],[121.554816,31.291592],[121.5545,31.29139]];
 
+    var map = new AMap.Map("container", {
+        resizeEnable: true,
+        center: [121.553411,31.289103],
+        zoom: 17
+    });
+
+    marker = new AMap.Marker({
+        map: map,
+        position: [121.553411,31.289103],
+        icon: "https://webapi.amap.com/images/car.png",
+        offset: new AMap.Pixel(-26, -13),
+        autoRotation: true,
+        angle:-90,
+    });
+
+    // 绘制轨迹
+    var polyline = new AMap.Polyline({
+        map: map,
+        path: lineArr,
+        showDir:true,
+        strokeColor: "#28F",  //线颜色
+        // strokeOpacity: 1,     //线透明度
+        strokeWeight: 6,      //线宽
+        // strokeStyle: "solid"  //线样式
+    });
+
+    var passedPolyline = new AMap.Polyline({
+        map: map,
+        // path: lineArr,
+        strokeColor: "#AF5",  //线颜色
+        // strokeOpacity: 1,     //线透明度
+        strokeWeight: 6,      //线宽
+        // strokeStyle: "solid"  //线样式
+    });
+
+
+    marker.on('moving', function (e) {
+        passedPolyline.setPath(e.passedPath);
+    });
+
+    map.setFitView();
+
+    function startAnimation () {
+        marker.moveAlong(lineArr, 200);
+    }
+
+    function pauseAnimation () {
+        marker.pauseMove();
+    }
+
+    function resumeAnimation () {
+        marker.resumeMove();
+    }
+
+    function stopAnimation () {
+        marker.stopMove();
+    }
 </script>
 {% end %}
