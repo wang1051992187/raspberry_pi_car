@@ -1,4 +1,22 @@
 {% extends "base.html" %}
+{% block css %}
+<link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css"/>
+    <style>
+        html, body, #container {
+            height: 100%;
+            width: 100%;
+        }
+
+        .input-card .btn{
+            margin-right: 1.2rem;
+            width: 9rem;
+        }
+
+        .input-card .btn:last-child{
+            margin-right: 0;
+        }
+    </style>
+{% end %}
 {% block container %}
         <div class="panel panel-default">
           <div class="panel-heading">

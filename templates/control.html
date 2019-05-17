@@ -24,8 +24,6 @@
                           <button id="change" class="btn btn-large btn-primary">状态切换(水/路)</button>
                       </div>
                       <br/>
-                      <br/>
-                      <br/>
                         <div class="row" >
                           <div class="col-md-4"></div>
                           <div class="col-md-4"><button id="advance" class="btn btn-large btn-primary" type="button"><span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span><br/>前进</button></div>
@@ -40,6 +38,12 @@
                           <div class="col-md-4"></div>
                           <div class="col-md-4"><button id="back" class="btn btn-large btn-primary" type="button"><span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span><br/>后退</button></div>
                           <div class="col-md-4"></div>
+                      </div>
+                      <br>
+                      <div class="row">
+                          <div class="col-md-4"><button id="add" class="btn btn-large btn-primary" type="button"><span class="glyphicon glyphicon glyphicon-plus-sign" aria-hidden="true"></span><br/>加速</button></div>
+                          <div class="col-md-4"><button id="stop" class="btn btn-large btn-primary" type="button"><span class="glyphicon glyphicon glyphicon-ban-circle" aria-hidden="true"></span><br/>暂停</button></div>
+                          <div class="col-md-4"><button id="del" class="btn btn-large btn-primary" type="button"><span class="glyphicon glyphicon glyphicon-minus-sign" aria-hidden="true"></span><br/>减速</button></div>
                       </div>
 
 
@@ -126,6 +130,18 @@ function encode (input) {
         console.log("切换");
         getApi('e');
     });
+    $('#add').click(function(){
+        console.log("加速");
+        getApi('u');
+    });
+    $('#del').click(function(){
+        console.log("减速");
+        getApi('o');
+    });
+    $('#stop').click(function(){
+        console.log("停止");
+        getApi('q');
+    });
     //后台请求控制命令
     function getApi(way_i) {
         $.ajax({
@@ -164,19 +180,19 @@ function encode (input) {
         }
         if(event.which == 81 ){
             console.log("按下Q键");
-            $('#').click();
+            $('#stop').click();
             event.preventDefault();
         }
 
         if(event.which == 38 ){
             console.log("按下向上键");
-            $('#').click();
+            $('#add').click();
             event.preventDefault();
         }
 
         if(event.which == 40 ){
             console.log("按下向下键");
-            $('#').click();
+            $('#del').click();
             event.preventDefault();
         }
 

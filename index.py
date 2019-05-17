@@ -17,6 +17,7 @@ from threading import Thread
 import asyncio
 import random
 from get_rasp_info import get_rasp_infos
+#from DHT import get_DHT
 
 
 WIDTH = 700
@@ -118,6 +119,7 @@ class HumitureHandler(tornado.web.RequestHandler):
     温湿度获取
     """
     def get(self):
+        #temperature,humidity = get_DHT() # 获取温湿度信息
         temperature = random.uniform(30.0,40.0)
         humidity = random.uniform(23.1,50.0)
         data = {

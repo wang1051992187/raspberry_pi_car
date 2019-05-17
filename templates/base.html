@@ -41,25 +41,10 @@
       <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-      <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css"/>
-    <style>
-        html, body, #container {
-            height: 100%;
-            width: 100%;
-        }
+<!--      <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css"/>-->
+    {% block css %}
 
-        .input-card .btn{
-            margin-right: 1.2rem;
-            width: 9rem;
-        }
-
-        .input-card .btn:last-child{
-            margin-right: 0;
-        }
-        {% block css %}
-
-        {% end %}
-    </style>
+    {% end %}
   </head>
 
   <body>
