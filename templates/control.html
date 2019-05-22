@@ -64,7 +64,7 @@
                   </div>
                   <div class="panel-body" style="min-height: 120px;margin: auto">
                       <!--<div class="alert alert-success" role="alert">操作提示</div>-->
-                            <div id="container-speed" style="min-width: 330px; height: 240px;float: left"></div>
+                      <div id="container-speed" style="min-width: 330px; min-height: 200px;float: left"></div>
                   </div>
               </div>
           </div>
@@ -142,10 +142,24 @@ function encode (input) {
     $('#add').click(function(){
         console.log("加速");
         getApi('u');
+        var point,inc =2;
+        point = chart1.series[0].points[0];
+		newVal = point.y + inc;
+		if (newVal < 0 || newVal > 20) {
+			newVal = point.y - inc;
+		}
+		point.update(newVal);
     });
     $('#del').click(function(){
         console.log("减速");
         getApi('o');
+        var point,inc =2;
+        point = chart1.series[0].points[0];
+		newVal = point.y - inc;
+		if (newVal < 0 || newVal > 20) {
+			newVal = point.y + inc;
+		}
+		point.update(newVal);
     });
     $('#stop').click(function(){
         console.log("停止");
@@ -270,7 +284,7 @@ var chart1 = Highcharts.chart('container-speed', {
 	},
 	series: [{
 		name: '速度',
-		data: [14],
+		data: [10],
 		dataLabels: {
 			format: '<div style="text-align:center"><span style="font-size:25px;color:' +
 			((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y}</span><br/>' +
@@ -281,20 +295,5 @@ var chart1 = Highcharts.chart('container-speed', {
 		}
 	}]
 });
-// 定时刷新数据
-setInterval(function () {
-	var point,
-		newVal,
-		inc;
-	if (chart1) {
-		point = chart1.series[0].points[0];
-		inc = Math.round((Math.random() - 0.5) * 10);
-		newVal = point.y + inc;
-		if (newVal < 0 || newVal > 200) {
-			newVal = point.y - inc;
-		}
-		point.update(newVal);
-	}
-}, 10000);
 </script>
 {% end %}

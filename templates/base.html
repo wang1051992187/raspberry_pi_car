@@ -110,11 +110,11 @@
     <script src="https://code.highcharts.com.cn/highcharts/modules/solid-gauge.js"></script>
     <script>
       window.onload = function () {
-          getApi();
+          getRaspinfoApi();
       }
-      function getApi() {
+      function getRaspinfoApi() {
         //设置时间 5-秒  1000-毫秒  这里设置你自己想要的时间
-        setTimeout(getApi,5*1000);
+        setTimeout(getRaspinfoApi,5*1000);
         $.ajax({
             url: 'http://{{url}}/raspberryinfo',
             type: 'get',
