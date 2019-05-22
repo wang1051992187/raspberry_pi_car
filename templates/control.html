@@ -12,7 +12,15 @@
                   <div class="panel-body">
                     <img id="liveImg" src="" width="700" height="500">
                   </div>
-                </div>
+              </div>
+              <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">提示信息</h3>
+                  </div>
+                  <div class="panel-body" style="min-height: 120px;margin: auto">
+                    <div class="alert alert-success" role="alert">操作提示</div>
+                  </div>
+              </div>
           </div>
           <div class="col-xs-6 col-md-4">
               <div class="panel panel-default">
@@ -52,10 +60,11 @@
               </div>
               <div class="panel panel-default">
                   <div class="panel-heading">
-                    <h3 class="panel-title">提示信息</h3>
+                    <h3 class="panel-title">车辆速度</h3>
                   </div>
                   <div class="panel-body" style="min-height: 120px;margin: auto">
-                      <div class="alert alert-success" role="alert">操作提示</div>
+                      <!--<div class="alert alert-success" role="alert">操作提示</div>-->
+                            <div id="container-speed" style="min-width: 330px; height: 240px;float: left"></div>
                   </div>
               </div>
           </div>
@@ -197,5 +206,95 @@ function encode (input) {
         }
 
 });
+</script>
+<script type="text/javascript">
+    // 公共配置
+Highcharts.setOptions({
+	chart: {
+		type: 'solidgauge'
+	},
+	title: null,
+	pane: {
+		center: ['50%', '85%'],
+		size: '140%',
+		startAngle: -90,
+		endAngle: 90,
+		background: {
+			backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || '#EEE',
+			innerRadius: '60%',
+			outerRadius: '100%',
+			shape: 'arc'
+		}
+	},
+	tooltip: {
+		enabled: false
+	},
+	yAxis: {
+		stops: [
+			[0.1, '#55BF3B'], // green
+			[0.5, '#DDDF0D'], // yellow
+			[0.9, '#DF5353'] // red
+		],
+		lineWidth: 0,
+		minorTickInterval: null,
+		tickPixelInterval: 400,
+		tickWidth: 0,
+		title: {
+			y: -70
+		},
+		labels: {
+			y: 16
+		}
+	},
+	plotOptions: {
+		solidgauge: {
+			dataLabels: {
+				y: 5,
+				borderWidth: 0,
+				useHTML: true
+			}
+		}
+	}
+});
+// 速度仪表
+var chart1 = Highcharts.chart('container-speed', {
+	yAxis: {
+		min: 0,
+		max: 20,
+		title: {
+			text: '速度'
+		}
+	},
+	credits: {
+		enabled: false
+	},
+	series: [{
+		name: '速度',
+		data: [14],
+		dataLabels: {
+			format: '<div style="text-align:center"><span style="font-size:25px;color:' +
+			((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y}</span><br/>' +
+			'<span style="font-size:12px;color:silver">km/h</span></div>'
+		},
+		tooltip: {
+			valueSuffix: ' km/h'
+		}
+	}]
+});
+// 定时刷新数据
+setInterval(function () {
+	var point,
+		newVal,
+		inc;
+	if (chart1) {
+		point = chart1.series[0].points[0];
+		inc = Math.round((Math.random() - 0.5) * 10);
+		newVal = point.y + inc;
+		if (newVal < 0 || newVal > 200) {
+			newVal = point.y - inc;
+		}
+		point.update(newVal);
+	}
+}, 10000);
 </script>
 {% end %}

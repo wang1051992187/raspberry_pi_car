@@ -43,6 +43,8 @@ class IndexHandler(tornado.web.RequestHandler):
 class ControlHandler(tornado.web.RequestHandler):
     """
     实时控制
+    增加实时温湿度信息
+    实时经纬度在地图显示信息
     """
     def get(self):
         self.render('control.html',title="实时控制",url=html_url,active=1)
@@ -107,6 +109,11 @@ class HistoryHandler(tornado.web.RequestHandler):
     建立SQLite数据库保存数据
     包含小车这次行走的数据(经纬度数据)
     小车行走得到的温湿度变化(温度数据)
+
+
+    能够选择不同的记录
+    每次小车行驶的经纬度信息
+    每次记录的温湿度
     """
     def get(self):
         self.render('history.html',title="历史数据",url=html_url,active=2)
@@ -134,6 +141,8 @@ class HumitureHandler(tornado.web.RequestHandler):
 class SelfdriveHandler(tornado.web.RequestHandler):
     """
     自动驾驶
+
+    根据选择不同的信息数据，来实现自动驾驶
     """
     def get(self):
         self.render('selfdrive.html',title="自动驾驶",url=html_url,active=3)
