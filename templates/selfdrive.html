@@ -35,7 +35,7 @@
                     <h3 class="panel-title">实时画面</h3>
                   </div>
                   <div class="panel-body">
-                    <img id="liveImg" src="" style="min-height: 300px">
+                    <img id="liveImg" src="" width="330" height="300">
                   </div>
               </div>
               <div class="panel panel-default">
@@ -122,5 +122,51 @@
     function stopAnimation () {
         marker.stopMove();
     }
+</script>
+<script type="text/javascript">
+var img = document.getElementById("liveImg");
+var arrayBuffer;
+
+//使用WebSocket连接到服务器
+var ws = new WebSocket("ws://{{url}}/camera"); ws.binaryType = 'arraybuffer';   //设置为要接收的数据是二进制
+
+ws.onopen = function(){console.log("connection was established");};  //建立连接时调用
+ws.onmessage = function(evt){
+	arrayBuffer = evt.data;
+        //解码接收的数据并使用base64进行编码
+	img.src = "data:image/jpeg;base64," + encode(new Uint8Array(arrayBuffer));
+};
+
+window.onbeforeunload = function(){
+    //当窗口（选项卡）关闭时，通知服务器会话结束
+    ws.close(1000);
+};
+
+function encode (input) {
+    var keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+    var output = "";
+    var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
+    var i = 0;
+
+    while (i < input.length) {
+        chr1 = input[i++];
+        chr2 = i < input.length ? input[i++] : Number.NaN; // Not sure if the index
+        chr3 = i < input.length ? input[i++] : Number.NaN; // checks are needed here
+
+        enc1 = chr1 >> 2;
+        enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+        enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+        enc4 = chr3 & 63;
+
+        if (isNaN(chr2)) {
+            enc3 = enc4 = 64;
+        } else if (isNaN(chr3)) {
+            enc4 = 64;
+        }
+        output += keyStr.charAt(enc1) + keyStr.charAt(enc2) +
+                  keyStr.charAt(enc3) + keyStr.charAt(enc4);
+    }
+    return output;
+}
 </script>
 {% end %}

@@ -24,6 +24,7 @@ WIDTH = 700
 HEIGHT = 500
 FPS = 15
 
+global type
 html_url = "127.0.0.1:8000"
 from tornado.options import define, options
 
@@ -57,7 +58,11 @@ class TocontrolHandler(tornado.web.RequestHandler):
     """
     实时控制
     """
+    global type2
+    type2 =0
     def get(self):
+        if type2:
+            pass
         msg = ''
         way = self.get_argument('way', 'q')
         if way == 'w':

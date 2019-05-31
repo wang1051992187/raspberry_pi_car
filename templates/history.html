@@ -29,7 +29,7 @@
 
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h3 class="panel-title">当前温度变化情况</h3>
+            <h3 class="panel-title">当前湿度变化情况</h3>
           </div>
           <div class="panel-body">
               <div id="container2"></div>
@@ -38,7 +38,7 @@
 
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h3 class="panel-title">当前湿度变化情况</h3>
+            <h3 class="panel-title">当前温度变化情况</h3>
           </div>
           <div class="panel-body">
               <div id="container3"></div>
@@ -112,7 +112,7 @@ var chart = Highcharts.chart('container2', {
 		}
 	},
 	title: {
-		text: '温度实时数据'
+		text: '湿度实时数据'
 	},
 	xAxis: {
 		type: 'datetime',
@@ -134,7 +134,7 @@ var chart = Highcharts.chart('container2', {
 		enabled: false
 	},
 	series: [{
-		name: '当前温度',
+		name: '当前湿度',
 		data: (function () {
 			// 生成随机值
 			var data = [],
@@ -181,7 +181,7 @@ var chart = Highcharts.chart('container3', {
 		}
 	},
 	title: {
-		text: '湿度实时数据'
+		text: '温度实时数据'
 	},
 	xAxis: {
 		type: 'datetime',
@@ -203,7 +203,7 @@ var chart = Highcharts.chart('container3', {
 		enabled: false
 	},
 	series: [{
-		name: '当前湿度',
+		name: '当前温度',
 		data: (function () {
 			// 生成随机值
 			var data = [],

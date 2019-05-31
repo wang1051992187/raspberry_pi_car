@@ -5,8 +5,6 @@
 # """
 # import os
 #
-#
-# # Return CPU temperature as a character string
 # def getCPUtemperature():
 #     res = os.popen('vcgencmd measure_temp').readline()
 #     return (res.replace("temp=", "").replace("'C\n", ""))
@@ -25,17 +23,9 @@
 #         if i == 2:
 #             return (line.split()[1:4])
 #
-#
-# # Return % of CPU used by user as a character string
 # def getCPUuse():
 #     return (str(os.popen("top -n1 | awk '/Cpu\(s\):/ {print $2}'").readline().strip()))
 #
-#
-# # Return information about disk space as a list (unit included)
-# # Index 0: total disk space
-# # Index 1: used disk space
-# # Index 2: remaining disk space
-# # Index 3: percentage of disk used
 # def getDiskSpace():
 #     p = os.popen("df -h /")
 #     i = 0
@@ -45,14 +35,11 @@
 #         if i == 2:
 #             return (line.split()[1:5])
 #
-#
-# # CPU informatiom
 # CPU_temp = getCPUtemperature() # CPU 温度
 # CPU_usage = getCPUuse() # CPU使用信息
 #
 #
 # # RAM information
-# # Output is in kb, here I convert it in Mb for readability
 # RAM_stats = getRAMinfo()
 # RAM_total = round(int(RAM_stats[0]) / 1000, 1)
 # RAM_used = round(int(RAM_stats[1]) / 1000, 1)
@@ -67,8 +54,7 @@
 #
 def get_rasp_infos():
     #return (CPU_temp, CPU_usage, str((RAM_used / RAM_total) * 100)[0:4])
-    return 72,32,54
-#
+    return (32,45,39)
 #
 #
 #
