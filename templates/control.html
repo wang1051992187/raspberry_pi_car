@@ -55,6 +55,18 @@
                           <div class="col-md-4"><button id="stop" class="btn btn-large btn-primary" type="button"><span class="glyphicon glyphicon glyphicon-ban-circle" aria-hidden="true"></span><br/>暂停</button></div>
                           <div class="col-md-4"><button id="del" class="btn btn-large btn-primary" type="button"><span class="glyphicon glyphicon glyphicon-minus-sign" aria-hidden="true"></span><br/>减速</button></div>
                       </div>
+                      <br>
+                      <br>
+                      <br>
+                      <div class="row">
+                          <div class="col-md-6"><button id="behind_left_left" class="btn btn-large btn-primary" type="button"><span class="glyphicon glyphicon-triangle-left" aria-hidden="true"></span><br/>左后轮左转</button></div>
+                          <div class="col-md-6"><button id="behind_left_right" class="btn btn-large btn-primary" type="button"><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span><br/>左后轮右转</button></div>
+                      </div>
+                      <br>
+                      <div class="row">
+                          <div class="col-md-6"><button id="behind_right_left" class="btn btn-large btn-primary" type="button"><span class="glyphicon glyphicon-triangle-left" aria-hidden="true"></span><br/>右后轮左转</button></div>
+                          <div class="col-md-6"><button id="behind_right_right" class="btn btn-large btn-primary" type="button"><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span><br/>右后轮右转</button></div>
+                      </div>
 
 
 
@@ -140,6 +152,22 @@ function encode (input) {
     $('#change').click(function(){
         console.log("切换");
         getApi('e');
+    });
+    $('#behind_left_left').click(function(){
+        console.log("左后轮左转");
+        getApi('bll');
+    });
+    $('#behind_left_right').click(function(){
+        console.log("左后轮右转");
+        getApi('blr');
+    });
+    $('#behind_right_left').click(function(){
+        console.log("右后轮左转");
+        getApi('brl');
+    });
+    $('#behind_right_right').click(function(){
+        console.log("右后轮右转");
+        getApi('brr');
     });
     $('#add').click(function(){
         console.log("加速");

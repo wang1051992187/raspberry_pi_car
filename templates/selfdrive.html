@@ -51,76 +51,88 @@
         <div class="input-card" style="width: 140px;text-align:center">
                 <h4>轨迹回放控制</h4>
                 <div class="input-item" style="">
-                    <input type="button" class="btn" value="开始自动巡检" id="start" onclick="startAnimation()"/>
+                    <input type="button" class="btn" value="开始自动巡检" id="start" onclick="getApi()"/>
                 </div>
                 <div class="input-item" >
-                    <input type="button" class="btn" value="暂停巡检" id="resume" onclick="resumeAnimation()"/>
+                    <input type="button" class="btn" value="暂停巡检" id="resume" onclick="clearMarker()"/>
                 </div>
             </div>
 {% end %}
 
 
 {% block script %}
-<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.13&key=您申请的key值"></script>
-<script>
-    var marker, lineArr = [[121.553411,31.289103],[121.55392,31.289516],[121.554398,31.289809],[121.554677,31.289956],[121.554913,31.290075],[121.555353,31.290249],[121.555835,31.2904],[121.555648,31.290643],[121.555546,31.290762],[121.555465,31.290845],[121.555347,31.290987],[121.554929,31.29145],[121.554816,31.291592],[121.5545,31.29139]];
-
-    var map = new AMap.Map("container", {
+<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.14&key=您申请的key值"></script>
+<script type="text/javascript">
+    var marker, map = new AMap.Map("container", {
         resizeEnable: true,
-        center: [121.553411,31.289103],
-        zoom: 17
+        center: [121.563556,31.301765],
+        zoom: 13
     });
-
-    marker = new AMap.Marker({
-        map: map,
-        position: [121.553411,31.289103],
-        icon: "https://webapi.amap.com/images/car.png",
-        offset: new AMap.Pixel(-26, -13),
-        autoRotation: true,
-        angle:-90,
-    });
-
-    // 绘制轨迹
-    var polyline = new AMap.Polyline({
-        map: map,
-        path: lineArr,
-        showDir:true,
-        strokeColor: "#28F",  //线颜色
-        // strokeOpacity: 1,     //线透明度
-        strokeWeight: 6,      //线宽
-        // strokeStyle: "solid"  //线样式
-    });
-
-    var passedPolyline = new AMap.Polyline({
-        map: map,
-        // path: lineArr,
-        strokeColor: "#AF5",  //线颜色
-        // strokeOpacity: 1,     //线透明度
-        strokeWeight: 6,      //线宽
-        // strokeStyle: "solid"  //线样式
-    });
-
-
-    marker.on('moving', function (e) {
-        passedPolyline.setPath(e.passedPath);
-    });
-
-    map.setFitView();
-
-    function startAnimation () {
-        marker.moveAlong(lineArr, 200);
+    window.onload = function () {
+          addMarker();
+          getRaspinfoApi();
+      }
+      function getApi() {
+        //设置时间 5-秒  1000-毫秒  这里设置你自己想要的时间
+        setTimeout(getApi,5*1000);
+        setTimeout(getRaspinfoApi,5*1000);
+        $.ajax({
+            url: 'http://{{url}}/gpsinfo',
+            type: 'get',
+            dataType: 'json',
+            success: function (data) {
+                //方法中传入的参数data为后台获取的数据
+                console.log(data);
+                jingdu = data['jingdu'];
+                weidu = data['weidu'];
+                updatedata = [jingdu,weidu];
+                updateContent(updatedata);
+            }
+        })
     }
 
-    function pauseAnimation () {
-        marker.pauseMove();
+    // 实例化点标记
+    function addMarker() {
+        marker = new AMap.Marker({
+            icon: "./static/images/car2.png",
+            position: [121.563938,31.3021],
+            offset: new AMap.Pixel(-13, -30)
+        });
+        marker.setMap(map);
     }
 
-    function resumeAnimation () {
-        marker.resumeMove();
+    function updateContent(data) {
+
+        if (!marker) {
+            return;
+        }
+
+        // // 自定义点标记内容
+        // var markerContent = document.createElement("div");
+        //
+        // // 点标记中的图标
+        // var markerImg = document.createElement("img");
+        // markerImg.className = "markerlnglat";
+        // markerImg.src = "https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png";
+        // markerContent.appendChild(markerImg);
+        //
+        // // 点标记中的文本
+        // var markerSpan = document.createElement("span");
+        // markerSpan.className = 'marker';
+        // markerSpan.innerHTML = "Hi，我被更新啦！";
+        // markerContent.appendChild(markerSpan);
+        //
+        // marker.setContent(markerContent); //更新点标记内容
+        marker.setPosition(data); //更新点标记位置
     }
 
-    function stopAnimation () {
-        marker.stopMove();
+    // 清除 marker
+    function clearMarker() {
+
+        if (marker) {
+            marker.setMap(null);
+            marker = null;
+        }
     }
 </script>
 <script type="text/javascript">
