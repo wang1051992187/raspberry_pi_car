@@ -10,7 +10,8 @@
          2.picamera
 
 **Tornado架构详细设计**
-	本系统在Tonado架构之上根据不同的设计需要对整个项目进行如下类模块设计：
+
+    本系统在Tonado架构之上根据不同的设计需要对整个项目进行如下类模块设计：
 
 序号 | 名称 |  类名 
 :-:|:-:|:-:
@@ -33,7 +34,8 @@
 |  3   | 自主巡检界面 | selfdrive.html |
 
 **实时图像传输设计**
-	本实时图像传输技术采用websocket技术，以Tornado的websocket为基础，实现游览器和服务器的双向通讯。树莓派服务器通过创建拍摄和发送线程，将每帧数据通过websocket形式发送给游览器端。
+    
+    本实时图像传输技术采用websocket技术，以Tornado的websocket为基础，实现游览器和服务器的双向通讯。树莓派服务器通过创建拍摄和发送线程，将每帧数据通过websocket形式发送给游览器端。
 
 ![Image text](https://raw.githubusercontent.com/wang1051992187/raspberry_pi_car/master/imgs/image072.png)
 
@@ -41,7 +43,7 @@
 
 系统主界面
 
-
+![实时控制](<https://github.com/wang1051992187/raspberry_pi_car/blob/master/imgs/image075.png>)
 
 实时控制界面
 
