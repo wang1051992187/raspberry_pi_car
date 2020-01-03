@@ -41,9 +41,6 @@
 
 **运行截图**
 
-系统主界面
-
-![实时控制](<https://github.com/wang1051992187/raspberry_pi_car/blob/master/imgs/image075.png>)
 
 实时控制界面
 
